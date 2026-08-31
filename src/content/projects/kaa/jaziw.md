@@ -1,5 +1,5 @@
 ---
-title: "Jaziw"
+title: "Jazıw"
 description: "Qaraqalpaq tilindegi tekstlerdi tokenizatsiya, sentenizatsiya hám normalizatsiya qılıw kitapxanası"
 repos:
   - platform: "Python"

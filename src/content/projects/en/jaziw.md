@@ -1,5 +1,5 @@
 ---
-title: "Jaziw"
+title: "Jazıw"
 description: "A Python library for tokenization, sentence splitting, and normalization of Karakalpak texts"
 repos:
   - platform: "Python"
