@@ -1,6 +1,6 @@
 ---
 title: "Ayqulaq"
-description: "Qaraqalpaqsha ertekler álemi — ayqulaq.uz"
+description: "Balalar ushın qaraqalpaq tilindegi erteklerdi oqıw platforması"
 repos:
   - platform: "GitHub"
     url: "https://github.com/dontbeidle/ayqulaq"
