@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/Base.astro";
+import { useTranslations, getLocalePath } from "../../i18n/utils";
+
+const lang = "en";
+const t = useTranslations(lang);
+---
+
+<Base>
+  <section class="max-w-4xl mx-auto px-6 py-24 sm:py-32">
+    <div class="animate-fade-in">
+      <h1 class="text-4xl sm:text-5xl font-unbounded font-bold tracking-tight mb-4">
+        {t("hero.title")}
+      </h1>
+      <p class="text-lg sm:text-xl text-muted max-w-2xl mb-8">
+        {t("hero.subtitle")}
+      </p>
+      <div class="flex gap-4">
+        <a
+          href={getLocalePath(lang, "projects")}
+          class="inline-flex items-center px-5 py-2.5 bg-black text-white text-sm font-medium rounded hover:bg-muted transition-colors"
+        >
+          {t("hero.cta.projects")}
+        </a>
+        <a
+          href="https://t.me/donotidle"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-5 py-2.5 border border-border text-sm font-medium rounded hover:border-black transition-colors"
+        >
+          {t("hero.cta.join")} &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

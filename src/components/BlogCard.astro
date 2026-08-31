@@ -1,0 +1,31 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  slug: string;
+}
+
+const { title, description, date, slug } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const formattedDate = date.toLocaleDateString(lang === "kaa" ? "uz" : "en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<article class="border-b border-border pb-6">
+  <time class="text-xs text-muted">{formattedDate}</time>
+  <h3 class="text-lg font-semibold mt-1 mb-1">
+    <a href={slug} class="hover:text-muted">{title}</a>
+  </h3>
+  <p class="text-muted text-sm mb-2">{description}</p>
+  <a href={slug} class="text-sm font-medium hover:text-muted">
+    {t("blog.readMore")} &rarr;
+  </a>
+</article>

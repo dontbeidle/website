@@ -1,0 +1,32 @@
+---
+import { getLangFromUrl, useTranslations, getLocalePath, getSwitchLangPath } from "../i18n/utils";
+import { languages } from "../i18n/ui";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const switchLang = lang === "kaa" ? "en" : "kaa";
+const switchPath = getSwitchLangPath(lang, Astro.url.pathname);
+---
+
+<header class="border-b border-border">
+  <nav class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href={getLocalePath(lang)} class="text-lg font-unbounded font-bold tracking-tight hover:text-muted">
+      DontBeIdle
+    </a>
+
+    <div class="flex items-center gap-6">
+      <a href={getLocalePath(lang, "projects")} class="text-sm hover:text-muted">
+        {t("nav.projects")}
+      </a>
+      <a href={getLocalePath(lang, "blog")} class="text-sm hover:text-muted">
+        {t("nav.blog")}
+      </a>
+      <a
+        href={switchPath}
+        class="text-sm border border-border rounded px-2 py-1 hover:bg-black hover:text-white transition-colors"
+      >
+        {languages[switchLang]}
+      </a>
+    </div>
+  </nav>
+</header>

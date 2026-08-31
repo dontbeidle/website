@@ -1,0 +1,31 @@
+---
+import Base from "../../layouts/Base.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { useTranslations } from "../../i18n/utils";
+import { getCollection } from "astro:content";
+
+const lang = "kaa";
+const t = useTranslations(lang);
+
+const allProjects = await getCollection("projects");
+const projects = allProjects.filter((p) => p.id.startsWith("kaa/"));
+---
+
+<Base title={t("projects.title")} description={t("projects.description")}>
+  <section class="max-w-4xl mx-auto px-6 py-16">
+    <div class="animate-fade-in">
+      <h1 class="text-3xl font-bold tracking-tight mb-2">{t("projects.title")}</h1>
+      <p class="text-muted mb-8">{t("projects.description")}</p>
+      <div class="grid gap-4">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            github={project.data.github}
+            tags={project.data.tags}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
