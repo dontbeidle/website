@@ -21,7 +21,7 @@ const projects = allProjects.filter((p) => p.id.startsWith("en/"));
           <ProjectCard
             title={project.data.title}
             description={project.data.description}
-            github={project.data.github}
+            repos={project.data.repos}
             tags={project.data.tags}
           />
         ))}

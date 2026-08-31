@@ -1,7 +1,9 @@
 ---
 title: "idle.uz"
 description: "DontBeIdle hamjamiyatiniń rasmiy veb-sayti"
-github: "https://github.com/dontbeidle/website"
+repos:
+  - platform: "GitHub"
+    url: "https://github.com/dontbeidle/website"
 tags: ["web", "astro"]
 ---
 
