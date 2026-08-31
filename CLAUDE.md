@@ -1,67 +1,81 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Project Overview
 
-DontBeIdle community website at `idle.uz`. Built with Astro 7, Tailwind CSS 4, and deployed via GitHub Actions to GitHub Pages. Supports two languages: Karakalpak (kaa, default) and English (en).
+DontBeIdle community website at `idle.uz`. Astro 7, Tailwind CSS 4, GitHub Pages. Two languages: Karakalpak (`kaa`, default) and English (`en`).
 
-## Development
+## Commands
 
 ```bash
-npm install        # install dependencies
-npm run dev        # local dev server (localhost:4321)
+npm run dev        # localhost:4321
 npm run build      # production build → dist/
-npm run preview    # preview production build
+npm run preview    # preview build
 ```
 
-**Deployment:** Push to `main` branch triggers GitHub Actions (`.github/workflows/deploy.yml`) which builds and deploys to GitHub Pages. The `CNAME` file maps to `idle.uz`.
+After changing content collection schema, clear cache: `rm -rf .astro`
+
+## Deploy
+
+Push to `main` → GitHub Actions (`.github/workflows/deploy.yml`) → GitHub Pages. Pages source is set to `workflow` (not branch). `CNAME` maps to `idle.uz`.
 
 ## Architecture
 
-- **Astro 7** — static site generator with file-based routing
-- **Tailwind CSS 4** — via `@tailwindcss/vite` plugin (configured in `astro.config.mjs`)
-- **Content Collections** — type-safe Markdown for projects and blog posts (`src/content.config.ts`)
-- **i18n** — Astro's built-in i18n routing; default locale `kaa` has no URL prefix, `en` pages live under `/en/`
+| Layer | Tech | Config |
+|-------|------|--------|
+| SSG | Astro 7 | `astro.config.mjs` |
+| CSS | Tailwind 4 | `@tailwindcss/vite` in astro config |
+| Content | Collections + Markdown | `src/content.config.ts` |
+| i18n | Astro built-in routing | `kaa` default (no prefix), `en` under `/en/` |
 
 ### Fonts
 
-- **Inter** — body text (loaded from Google Fonts)
-- **Unbounded** — site title "DontBeIdle" only (header logo, hero heading)
+- **Inter** — body (`--font-sans`)
+- **Unbounded** — "DontBeIdle" title only (`--font-unbounded`)
 
-Both fonts are loaded in `src/layouts/Base.astro` and registered as Tailwind theme tokens (`--font-sans`, `--font-unbounded`) in `src/styles/global.css`.
+Loaded in `src/layouts/Base.astro`, registered in `src/styles/global.css`.
 
-### Key directories
+### Key files
 
-- `src/i18n/` — translations (`ui.ts`) and helper functions (`utils.ts`)
-- `src/layouts/Base.astro` — shared HTML shell (head, nav, footer)
-- `src/components/` — Header, Footer, ProjectCard, BlogCard
-- `src/content/projects/{kaa,en}/` — project Markdown files
-- `src/content/blog/{kaa,en}/` — blog post Markdown files
-- `src/pages/` — Astro pages; `en/` subdirectory mirrors default locale pages
-- `src/styles/global.css` — Tailwind import, custom theme tokens, animations
+```
+src/
+├── content.config.ts              # Collection schemas (projects, blog)
+├── i18n/
+│   ├── ui.ts                      # All UI translations
+│   └── utils.ts                   # getLangFromUrl, useTranslations, getLocalePath, getSwitchLangPath
+├── layouts/Base.astro             # HTML shell (head, nav, footer)
+├── components/
+│   ├── Header.astro               # Nav + language switcher
+│   ├── Footer.astro               # GitHub, Telegram links
+│   ├── ProjectCard.astro          # Multi-repo project card
+│   └── BlogCard.astro             # Blog post card
+├── content/
+│   ├── projects/{kaa,en}/*.md     # Project entries
+│   └── blog/{kaa,en}/*.md         # Blog entries
+├── pages/                         # kaa pages at root, en/ mirrors structure
+└── styles/global.css              # Tailwind import, theme, animations
+```
 
-### i18n
+## Adding content
 
-Translations live in `src/i18n/ui.ts`. Helper functions in `src/i18n/utils.ts`:
-- `getLangFromUrl(url)` — detect current language from URL
-- `useTranslations(lang)` — returns a `t()` function for the given locale
-- `getLocalePath(lang, path)` — build locale-aware URL path
-- `getSwitchLangPath(lang, path)` — get URL for switching to the other language
+**Project** — create both `src/content/projects/kaa/<name>.md` and `en/<name>.md`:
 
-### Adding content
-
-**New project:** Create `src/content/projects/{kaa,en}/project-name.md` with frontmatter:
 ```yaml
 ---
 title: "Project name"
 description: "Short description"
-github: "https://github.com/dontbeidle/repo-name"
-tags: ["web", "python"]
+repos:
+  - platform: "Python"
+    url: "https://github.com/dontbeidle/repo"
+  - platform: "Website"
+    url: "https://example.com"
+tags: ["nlp", "web"]
 ---
 ```
 
-**New blog post:** Create `src/content/blog/{kaa,en}/post-name.md` with frontmatter:
+A project can have multiple `repos` entries (e.g. Python, JavaScript, CLI variants of the same project).
+
+**Blog post** — create both `src/content/blog/kaa/<name>.md` and `en/<name>.md`:
+
 ```yaml
 ---
 title: "Post title"
